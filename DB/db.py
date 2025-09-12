@@ -6,6 +6,7 @@ def get_db_connection():
     return conn
 
 
+
 def init_db():
     conn = get_db_connection()
     conn.execute("""
