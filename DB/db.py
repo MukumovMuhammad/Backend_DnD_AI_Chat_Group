@@ -8,8 +8,9 @@ def get_db_connection():
 
 
 def init_db():
+    print("Initializing database...")
     conn = get_db_connection()
-    conn.execute("""
+    conn.executescript("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL UNIQUE,
@@ -18,15 +19,14 @@ def init_db():
             chat_friends TEXT DEFAULT '[]',
             chat_ai_games TEXT DEFAULT '[]'
         );
-                 
-         CREATE TABLE IF NOT EXISTS friends_chat (
+
+        CREATE TABLE IF NOT EXISTS friends_chat (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user1 TEXT NOT NULL,
             user2 TEXT NOT NULL,
             messages TEXT DEFAULT '[]'
-         
         );
-                 
+
         CREATE TABLE IF NOT EXISTS chat_group (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             group_name TEXT NOT NULL,
@@ -34,16 +34,20 @@ def init_db():
             messages TEXT DEFAULT '[]'
         );
     """)
+    print("Database initialized.")
     conn.commit()
     conn.close()
 
+
 def add_user(username, password, friends='[]', chat_friends='[]', chat_ai_games='[]'):
+    print(f"Adding user: {username}")
     conn = get_db_connection()
     conn.execute("""
         INSERT INTO users (username, password, friends, chat_friends, chat_ai_games)
         VALUES (?, ?, ?, ?, ?)
     """, (username, password, friends, chat_friends, chat_ai_games))
     conn.commit()
+    print(f"User {username} added successfully.")
     conn.close()
 
 
