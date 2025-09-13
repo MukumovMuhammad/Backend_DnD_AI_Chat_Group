@@ -13,8 +13,31 @@ def startup_event():
 async def read_root():
     return {"Hello": "World"}
 
+
 @app.post("/register/")
 async def register_user(username: str, password: str):
     print(f"Registering user: {username}")
     db.add_user(username, password)
     return {"status": "User registered successfully"}
+
+
+
+@app.post("/login/")
+async def login_user(username: str, password: str):
+    user = db.get_user(username)
+    if user and user["password"] == password:
+        return {"status": "Login successful"}
+    return {"status": "Invalid username or password"}
+
+@app.get("/get_user/{username}")
+async def get_user_info(username: str):
+    user = db.get_user(username)
+    if user:
+        return {
+            "id": user["id"],
+            "username": user["username"],
+            "friends": user["friends"],
+            "chat_friends": user["chat_friends"],
+            "chat_ai_games": user["chat_ai_games"]
+        }
+    return {"error": "User not found"}
