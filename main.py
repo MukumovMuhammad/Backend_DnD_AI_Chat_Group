@@ -13,6 +13,7 @@ def startup_event():
 async def read_root():
     return {"The server is running": "Welcome to DnD Chat Group!, This is a test server."}
 
+######## User Registration and Login ########
 @app.post("/register/")
 async def register_user(username: str, password: str):
     print(f"Registering user: {username}")
@@ -28,14 +29,5 @@ async def login_user(username: str, password: str):
         return {"status": "Login successful"}
     return {"status": "Invalid username or password"}
 
-@app.get("/get_user/{username}")
-async def get_user_info(username: str):
-    user = db.get_user(username)
-    if user:
-        return {
-            "id": user["id"],
-            "username": user["username"],
-            "friends": user["friends"],
-            "chat_ai_games": user["chat_ai_games"]
-        }
-    return {"error": "User not found"}
+
+######### End of User Registration and Login #########
