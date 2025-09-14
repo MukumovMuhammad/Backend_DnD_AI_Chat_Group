@@ -11,8 +11,7 @@ def startup_event():
 
 @app.get("/")
 async def read_root():
-    return {"Hello": "World"}
-
+    return {"The server is running": "Welcome to DnD Chat Group!, This is a test server."}
 
 @app.post("/register/")
 async def register_user(username: str, password: str):
@@ -37,7 +36,6 @@ async def get_user_info(username: str):
             "id": user["id"],
             "username": user["username"],
             "friends": user["friends"],
-            "chat_friends": user["chat_friends"],
             "chat_ai_games": user["chat_ai_games"]
         }
     return {"error": "User not found"}
