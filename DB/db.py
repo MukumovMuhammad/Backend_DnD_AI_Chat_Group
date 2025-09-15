@@ -18,30 +18,10 @@ def init_db():
             password TEXT NOT NULL
         );
 
-        -- Table for mutual, confirmed friendships
-        CREATE TABLE IF NOT EXISTS friendships (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            friend_id INTEGER NOT NULL,
-            created_at TEXT NOT NULL,
-            FOREIGN KEY (user_id) REFERENCES users (id),
-            FOREIGN KEY (friend_id) REFERENCES users (id),
-            UNIQUE (user_id, friend_id)
-        );
+                       
 
-        -- Table for pending friend requests
-        CREATE TABLE IF NOT EXISTS friend_requests (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            sender_id INTEGER NOT NULL,
-            receiver_id INTEGER NOT NULL,
-            status TEXT DEFAULT 'pending',
-            created_at TEXT NOT NULL,
-            FOREIGN KEY (sender_id) REFERENCES users (id),
-            FOREIGN KEY (receiver_id) REFERENCES users (id)
-        );
-
-        -- Table for one-on-one chats between friends
-        CREATE TABLE IF NOT EXISTS friends_chat (
+        -- Table for one-on-one chats between users
+        CREATE TABLE IF NOT EXISTS simple_chat (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user1_id INTEGER NOT NULL,
             user2_id INTEGER NOT NULL,
