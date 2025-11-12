@@ -15,28 +15,10 @@ def init_db():
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL UNIQUE,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
+            token TEXT
         );
 
-                       
-
-        -- Table for one-on-one chats between users
-        CREATE TABLE IF NOT EXISTS simple_chat (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user1_id INTEGER NOT NULL,
-            user2_id INTEGER NOT NULL,
-            messages TEXT DEFAULT '[]',
-            FOREIGN KEY (user1_id) REFERENCES users (id),
-            FOREIGN KEY (user2_id) REFERENCES users (id)
-        );
-
-        -- Table for group chats
-        CREATE TABLE IF NOT EXISTS game_groups (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            group_name TEXT NOT NULL,
-            members TEXT DEFAULT '[]',
-            messages TEXT DEFAULT '[]'
-        );
     """)
     print("Database initialized.")
     conn.commit()
@@ -45,14 +27,14 @@ def init_db():
 
 
 
-def add_user(username, password):
+def add_user(username, password, token):
     #Adds a new user to the database.
     print(f"Adding user: {username}")
     conn = get_db_connection()
     conn.execute("""
-        INSERT INTO users (username, password)
-        VALUES (?, ?)
-    """, (username, password))
+        INSERT INTO users (username, password, token)
+        VALUES (?, ?, ?)
+    """, (username, password, token))
     conn.commit()
     print(f"User {username} added successfully.")
     conn.close()

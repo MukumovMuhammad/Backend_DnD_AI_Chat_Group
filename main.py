@@ -1,8 +1,13 @@
 from fastapi import FastAPI
 from DB import db
+import secrets
 
 app = FastAPI()
 
+
+def generate_token():
+    # Generates a random URL-safe text string, suitable for use in tokens
+    return secrets.token_urlsafe(32) # 32 bytes of randomness
 
 # Run once when the app starts
 @app.on_event("startup")
@@ -17,8 +22,12 @@ async def read_root():
 @app.post("/register/")
 async def register_user(username: str, password: str):
     print(f"Registering user: {username}")
-    db.add_user(username, password)
-    return {"status": "User registered successfully"}
+
+    token = generate_token()
+    print(f"Users token! {token}")
+    db.add_user(username, password,token)
+    return {"status": "User registered successfully", "token" : token}
+
 
 
 
